@@ -1,3 +1,18 @@
+class piece{
+	constructor(piece, team){
+  	this.team=team
+		switch (piece){
+    case ("pawn"):
+    	this.validTurns=()=>{
+      	
+      }
+    break;
+    default:
+    	break;
+    }
+    
+}
+}
 class Board {
   turn = true;
   constructor() {
