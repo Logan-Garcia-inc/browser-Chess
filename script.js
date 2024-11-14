@@ -5,7 +5,7 @@ class Piece {
     switch (piece) {
       case "pawn":
         this.firstTurn = true
-        this.validTurns = (pos) => {
+        this.validTurns = (pos=this.pos) => {
         this.pos=pos
           let result = []
           let offset
@@ -19,10 +19,7 @@ class Piece {
          if (board.data[y + 1 * offset][x - 1]){
           if (board.data[y + 1 * offset][x - 1].team != this.team){
             result.push([y + 1 * offset,x - 1])
-          }}
-          console.log(x)
-          document.getElementById(`${y + 2 * offset};${x}`).style.borderColor="yellow"
-        
+          }}        
           if(board.data[y + 1 * offset][x + 1]){
           if (board.data[y + 1 * offset][x + 1].team != this.team) {
             result.push([ y + 1 * offset],x + 1)
@@ -30,11 +27,9 @@ class Piece {
           if (board.data[y + 2 * offset][x] == "") {
             result.push([y + 2 * offset,x])
           }
-          console.log(board.data[y + 1 * offset][x])
           if (board.data[y + 1 * offset][x] == "") {
             result.push([y + 1 * offset,x])
           }
-          console.log(result)
           return result
         }
         break
@@ -109,13 +104,18 @@ function main() {
     var pos = element.id.split(";")
     pos[0]=Number(pos[0])
     pos[1]=Number(pos[1])
+    if (selectedPiece){
+    if ( selectedPiece.validTurns().some(r=>JSON.stringify(r)==JSON.stringify(pos))){
+    console.log("hi")
+    }
+    }else{
     var piece = board.data[pos[0]][pos[1]]
 		
     for (let i of piece.validTurns(pos)) {
-    console.log(i)
      document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor="blue";  
     }
-  }
+    selectedPiece=piece;
+  }}
 
   function createChessBoard() {
     let chessBox = document.createElement("div")
