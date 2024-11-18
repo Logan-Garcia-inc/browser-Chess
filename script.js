@@ -138,9 +138,20 @@ class Board {
     ]
   }
   move=(piece, pos)=>{
+  console.log(this.data[pos[0]][pos[1]])
   	this.data[pos[0]][pos[1]]=piece;
+    console.log(this.data[pos[0]][pos[1]])
+    console.log(this.data[piece.pos[0]][piece.pos[1]])
      	this.data[piece.pos[0]][piece.pos[1]]=""
       console.log(	this.data[piece.pos[0]][piece.pos[1]])
+      let result=""
+      for (let i =0;i<this.data.length;i++){
+      for (let o=0;o<this.data[i].length; o++){
+      result+= board.data[i][o] ? "1" : "0"
+      }
+      result+="\n"
+      }
+      console.log(result)
   }
 }
 
@@ -172,16 +183,6 @@ function main() {
      document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor="";  
     }
     board.move(selectedPiece, pos)
-     for (let i=0; i<board.data.length;i++){
-     console.log(i)
-     for (let o of board.data[i]){
-     if (!!o&&i==2){
-     console.log(o)
-     }
-     console.log(!!o)
-     }
-    
-     }
     }}
     }else{
    
@@ -219,6 +220,8 @@ function main() {
 
 
   board = new Board()	
+  board.data[3][3]=new Piece("pawn" ,"white")
+ board.data[3][3]=""
   createChessBoard()
   removeEverything()
   updateDisplay()
