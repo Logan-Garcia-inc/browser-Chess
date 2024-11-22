@@ -1,8 +1,10 @@
-  function updateDisplay() {
+  
+function main() {
+function updateDisplay() {
     for (var i = 0; i < 8; i++) {
       for (var o = 0; o < 8; o++) {
         if (board.data[i][o] == "") {
-          continue
+          document.getElementById(`${i};${o}`).style.backgroundImage =""
         }
         if (board.data[i][o].team == "white") {
           switch (board.data[i][o].piece) {
@@ -41,8 +43,11 @@
               document.getElementById(`${i};${o}`).style.backgroundImage =
                 "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSURCYBIl2vMg2XA3dqx4xhN8OpN_tNWwBYaw&usqp=CAU')"
               break
+             
           }
+           
         }
+        
       }
     }
   }
@@ -54,8 +59,7 @@
     switch (piece) {
       case "pawn":
         this.firstTurn = true
-        this.validTurns = (pos=this.pos) => {
-        this.pos=pos
+        this.validTurns = () => {
           let result = []
           let offset
           let y=this.pos[0]
@@ -135,15 +139,19 @@ class Board {
       new Piece("knight","black"),
        new Piece("rook","black"),
       ],
-    ]
+    ];
+    for(let i=0;i<this.data.length;i++){
+    for (let o=0; o<this.data[i].length;o++){
+    	if(this.data[i][o]){
+    	this.data[i][o].pos=[i,o]
+    }}
+    }
   }
   move=(piece, pos)=>{
-  console.log(this.data[pos[0]][pos[1]])
   	this.data[pos[0]][pos[1]]=piece;
-    console.log(this.data[pos[0]][pos[1]])
-    console.log(this.data[piece.pos[0]][piece.pos[1]])
      	this.data[piece.pos[0]][piece.pos[1]]=""
-      console.log(	this.data[piece.pos[0]][piece.pos[1]])
+      piece.pos=pos
+      
       let result=""
       for (let i =0;i<this.data.length;i++){
       for (let o=0;o<this.data[i].length; o++){
@@ -155,7 +163,6 @@ class Board {
   }
 }
 
-function main() {
   var removeEverything = () => {
     var elements = document.body.querySelectorAll("*")
     for (var i = 0; i < elements.length; i++) {
@@ -183,6 +190,7 @@ function main() {
      document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor="";  
     }
     board.move(selectedPiece, pos)
+    selectPiece=""
     }}
     }else{
    
@@ -216,14 +224,9 @@ function main() {
       }
     }
   }
-
-
-
-  board = new Board()	
-  board.data[3][3]=new Piece("pawn" ,"white")
- board.data[3][3]=""
-  createChessBoard()
   removeEverything()
+  board = new Board()	
+  createChessBoard()
   updateDisplay()
 }
 main()
