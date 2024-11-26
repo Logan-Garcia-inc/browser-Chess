@@ -77,7 +77,7 @@ function updateDisplay() {
           if (board.data[y + 1 * offset][x + 1].team != this.team) {
             result.push([ y + 1 * offset],x + 1)
           }}
-          if (board.data[y + 2 * offset][x] == "") {
+          if (board.data[y + 2 * offset][x] == "" && this.firstTurn) {
             result.push([y + 2 * offset,x])
           }
           if (board.data[y + 1 * offset][x] == "") {
@@ -89,6 +89,9 @@ function updateDisplay() {
       default:
         break
     }
+  }
+  turnPlayed=()=>{
+  	this.firstTurn=false
   }
 }
 class Board {
@@ -151,15 +154,9 @@ class Board {
   	this.data[pos[0]][pos[1]]=piece;
      	this.data[piece.pos[0]][piece.pos[1]]=""
       piece.pos=pos
-      
+      piece.turnPlayed();
       let result=""
-      for (let i =0;i<this.data.length;i++){
-      for (let o=0;o<this.data[i].length; o++){
-      result+= board.data[i][o] ? "1" : "0"
-      }
-      result+="\n"
-      }
-      console.log(result)
+    /*logs the board*/for (let i =0;i<this.data.length;i++){for (let o=0;o<this.data[i].length; o++){result+= board.data[i][o] ? "1" : "0"}result+="\n"}console.log(result)
   }
 }
 
@@ -190,11 +187,9 @@ class Board {
      document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor="";  
     }
     board.move(selectedPiece, pos)
-    selectPiece=""
+    selectedPiece=""
     }}
     }else{
-   
-		
     for (let i of piece.validTurns(pos)) {
      document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor="blue";  
     }
@@ -207,7 +202,7 @@ class Board {
     let chessBox = document.createElement("div")
     chessBox.id = "chessBox"
     chessBox.style =
-      "border-style:solid; border-width:1px; display: grid; grid-template-columns: repeat(8,60px); grid-template-rows: repeat(8,60px); width: fit-content; height: fit-content;"
+      `border-style:solid; border-width:1px; display: grid; grid-template-columns: repeat(${8},60px); grid-template-rows: repeat(${8},60px); width: fit-content; height: fit-content;`
     document.body.appendChild(chessBox)
 
     for (var i = 0; i < 8; i++) {
@@ -217,7 +212,7 @@ class Board {
           selectPiece(e.target)
         })
         box.style =
-          "border-style: solid; border-width:1px; font-size:10px;font-weight: bold; background-size:contain;"
+          "border-style: solid; border-width:1px; font-size:10px;font-weight: bold; background-size:contain;background-repeat:no-repeat"
         box.id = `${i};${o}`
         box.textContent = `${i};${o}`
         chessBox.append(box)
@@ -225,6 +220,7 @@ class Board {
     }
   }
   removeEverything()
+  
   board = new Board()	
   createChessBoard()
   updateDisplay()
