@@ -1,4 +1,7 @@
 //function main() {
+function spawnPiece(pos){
+	return;
+}
 function updateDisplay() {
   for (var i = 0; i < 8; i++) {
     for (var o = 0; o < 8; o++) {
@@ -49,14 +52,7 @@ function updateDisplay() {
 }
 
 class Piece {
-  constructor(piece, team, pos=[NaN,NaN]) {
-    this.team = team
-    this.piece = piece
-    this.firstTurn = true
-    this.pos=pos
-    switch (piece) {
-      case "pawn":
-        this.validTurns = () => {
+pawn(){
           let result = []
           let offset
           let y = this.pos[0]
@@ -88,64 +84,90 @@ class Piece {
           }
           return result
         }
-        break;
-      case "rook":
-       this.validTurns = () => {
-          let result = [];
-          let y = this.pos[0];
-          let x = this.pos[1];
-          let i=-1;
-          while (y+i>=0 && y+i<8 && board.data[y+i][x]==""){
-          result.push([y+i,x]);
-          i--
+        rook(){
+          let result = []
+          let y = this.pos[0]
+          let x = this.pos[1]
+          let i = -1
+          while (y + i >= 0 && y + i < 8 && board.data[y + i][x] == "") {
+            result.push([y + i, x])
+            i--
           }
-          if (board.data[y+i][x]){
-          if (board.data[y+i][x].team!=this.team){
-          	result.push([y+i,x])
+          if (y+i>=0 && y+i<8){if (board.data[y + i][x]) {
+            if (board.data[y + i][x].team != this.team) {
+              result.push([y + i, x])
+            }}
+          }i=-1
+          while (x + i >= 0 && x + i < 8 && board.data[y ][x+ i] == "") {
+            result.push([y, x+ i])
+            i--
           }
+          if (x+i>=0 && x+i<8){if (board.data[y ][x+ i]) {
+            if (board.data[y ][x+ i].team != this.team) {
+              result.push([y, x+ i])
+            }}
           }
-          i=1
-          console.log([y,x+i+1])
+          i = 1
+           while (y + i >= 0 && y + i < 8 && board.data[y + i][x] == "") {
+            result.push([y + i, x])
+            i++
+          }
+          if (y+i>=0 && y+i<8){if (board.data[y + i][x]) {
+            if (board.data[y + i][x].team != this.team) {
+              result.push([y + i, x])
+            }}
+          }i=1
+          while (x + i >= 0 && x + i < 8 && board.data[y ][x+ i] == "") {
+            result.push([y, x+ i])
+            i++
+          }
+          if (x+i>=0 && x+i<8){if (board.data[y ][x+ i]) {
+            if (board.data[y ][x+ i].team != this.team) {
+              result.push([y, x+ i])
+            }}
+          }
           
-          while (x+i>=0 && x+i<8 && board.data[y][x+i]==""){
-          result.push([y,x+i]);
-          i++
-          }
-          if (board.data[y][x+i]){
-            if (board.data[y][x+i].team!=this.team){
-          	result.push([y,x+i])
-          }}
-          i=1
-          
-          while (y+i>=0 && y+i<8 && board.data[y+i][x]==""){
-          result.push([y+i,x]);
-          i++
-          }
-          if (board.data[y+i][x]){
-          if (board.data[y+i][x].team!=this.team){
-          	result.push([y+i,x])
-          }
-          }
-          i=-1
-          
-          while (x+i>=0 && x+i<8 && board.data[y][x+i]==""){
-          result.push([y,x+i]);
-          i--
-          }
-          if (board.data[y][x+i]){
-            if (board.data[y][x+i].team!=this.team){
-          	result.push([y,x+i])
-          }}
           return result
-          }
-      break;
+        }
+        bishop(){
+        
+        }
+  constructor(piece, team, pos = [NaN, NaN]) {
+    this.team = team
+    this.piece = piece
+    this.firstTurn = true
+    this.pos = pos
+    this.turnPlayed = () => {
+    this.firstTurn = false
+  }
+    switch (piece) {
+      case "pawn":
+        this.validTurns = this.pawn
+        this.turnPlayed = () => {
+    this.firstTurn = false
+    let offset
+    if (this.team=="white"){
+    	offset=0
+    } else{
+     offset=7
+    }
+    if (this.pos[0]==7-offset){
+   spawnPiece(this.pos);
+    updateDisplay();
+    }
+  }
+        break
+      case "rook":
+        this.validTurns =  this.rook;
+        break
+        case "bishop":
+        this.validTurns=this.bishop
+        break
       default:
         break
     }
   }
-  turnPlayed = () => {
-    this.firstTurn = false
-  }
+  
 }
 class Board {
   turn = true
@@ -284,9 +306,11 @@ function createChessBoard() {
     }
   }
 }
-
 removeEverything()
+
 board = new Board()
+board.data[6][0] = ""
+board.data[4][0] = new Piece("rook", "white", [4, 0])
 createChessBoard()
 updateDisplay()
 //}
