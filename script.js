@@ -49,10 +49,11 @@ function updateDisplay() {
 }
 
 class Piece {
-  constructor(piece, team) {
+  constructor(piece, team, pos=[NaN,NaN]) {
     this.team = team
     this.piece = piece
     this.firstTurn = true
+    this.pos=pos
     switch (piece) {
       case "pawn":
         this.validTurns = () => {
@@ -87,35 +88,54 @@ class Piece {
           }
           return result
         }
-        break
+        break;
       case "rook":
        this.validTurns = () => {
           let result = [];
-          let offset=-1;
           let y = this.pos[0];
           let x = this.pos[1];
-          let i=0;
+          let i=-1;
+          while (y+i>=0 && y+i<8 && board.data[y+i][x]==""){
+          result.push([y+i,x]);
+          i--
+          }
+          if (board.data[y+i][x]){
+          if (board.data[y+i][x].team!=this.team){
+          	result.push([y+i,x])
+          }
+          }
+          i=1
+          console.log([y,x+i+1])
           
-          while (i+y>=0 , y+i<8 , board.data[y+(i+1*offset)][x]==""){
-          result.push([y+(i+1*offset),x]);
-          i+=offset
+          while (x+i>=0 && x+i<8 && board.data[y][x+i]==""){
+          result.push([y,x+i]);
+          i++
           }
-          i=0
-          while (i+x>=0 , x+i<8 , board.data[y][x+(i+1*offset)]==""){
-          result.push([y,x+(i+1*offset)]);
-          i+=offset
+          if (board.data[y][x+i]){
+            if (board.data[y][x+i].team!=this.team){
+          	result.push([y,x+i])
+          }}
+          i=1
+          
+          while (y+i>=0 && y+i<8 && board.data[y+i][x]==""){
+          result.push([y+i,x]);
+          i++
           }
-          i=0
-          offset=1
-          while (i+y>=0 , y+i<8 , board.data[y+(i+1*offset)][x]==""){
-          result.push([y+(i+1*offset),x]);
-          i+=offset
+          if (board.data[y+i][x]){
+          if (board.data[y+i][x].team!=this.team){
+          	result.push([y+i,x])
           }
-          i=0
-          while (i+x>=0 , x+i<8 , board.data[y][x+(i+1*offset)]==""){
-          result.push([y,x+(i+1*offset)]);
-          i+=offset
           }
+          i=-1
+          
+          while (x+i>=0 && x+i<8 && board.data[y][x+i]==""){
+          result.push([y,x+i]);
+          i--
+          }
+          if (board.data[y][x+i]){
+            if (board.data[y][x+i].team!=this.team){
+          	result.push([y,x+i])
+          }}
           return result
           }
       break;
@@ -264,10 +284,9 @@ function createChessBoard() {
     }
   }
 }
-removeEverything()
 
+removeEverything()
 board = new Board()
-board.data[6][0]=""
 createChessBoard()
 updateDisplay()
 //}
