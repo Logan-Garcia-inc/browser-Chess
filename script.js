@@ -1,4 +1,5 @@
-//function main() {
+function main() {
+var cellsInCheck=[]
 function spawnPiece(pos) {
   return
 }
@@ -66,7 +67,7 @@ function updateDisplay() {
 }
 
 class Piece {
-  pawn() {
+  pawn(attacking=false) {
     let result = []
     let offset
     let y = this.pos[0]
@@ -86,7 +87,9 @@ class Piece {
         result.push([y + 1 * offset, x + 1])
       }
     }
-
+if (attacking){
+return result
+}
     if (board.data[y + 1 * offset][x] == "") {
       result.push([y + 1 * offset, x])
     } else {
@@ -246,33 +249,58 @@ class Piece {
     return result
   }
   king() {
-  let result=[]
-  let checks=[[1,1],[1,0],[1,-1],[0,1],[0,-1],[-1,1],[-1,0],[-1,-1]]
-  for (let i of checks){
-   let y=this.pos[0]+i[0]
-    let x=this.pos[1]+i[1]
-    if (x<8 && x>=0 && y<8 && y>=0){
-    let o =board.data[y][x]
-    if (o){
-    if (o.team!=this.team){
-    	result.push([y,x])
-    }}else{result.push([y,x])}}
-  }
-  return result
-  }
-  knight(){
-  	let result=[]
-    let checks=[[1,2],[1,-2],[-1,2],[-1,-2],[2,1],[2,-1],[-2,1],[-2,-1]]
-    for (let i of checks){
-    let y=this.pos[0]+i[0]
-    let x=this.pos[1]+i[1]
-    if (x<8 && x>=0 && y<8 && y>=0){
-    let o =board.data[y][x]
-    if (o){
-    if (o.team!=this.team){
-    	result.push([y,x])
-    }}else{result.push([y,x])}
+    let result = []
+    let checks = [
+      [1, 1],
+      [1, 0],
+      [1, -1],
+      [0, 1],
+      [0, -1],
+      [-1, 1],
+      [-1, 0],
+      [-1, -1],
+    ]
+    for (let i of checks) {
+      let y = this.pos[0] + i[0]
+      let x = this.pos[1] + i[1]
+      if (x < 8 && x >= 0 && y < 8 && y >= 0) {
+        let o = board.data[y][x]
+        if (o) {
+          if (o.team != this.team) {
+            result.push([y, x])
+          }
+        } else {
+          result.push([y, x])
+        }
+      }
     }
+    return result
+  }
+  knight() {
+    let result = []
+    let checks = [
+      [1, 2],
+      [1, -2],
+      [-1, 2],
+      [-1, -2],
+      [2, 1],
+      [2, -1],
+      [-2, 1],
+      [-2, -1],
+    ]
+    for (let i of checks) {
+      let y = this.pos[0] + i[0]
+      let x = this.pos[1] + i[1]
+      if (x < 8 && x >= 0 && y < 8 && y >= 0) {
+        let o = board.data[y][x]
+        if (o) {
+          if (o.team != this.team) {
+            result.push([y, x])
+          }
+        } else {
+          result.push([y, x])
+        }
+      }
     }
     return result
   }
@@ -310,18 +338,18 @@ class Piece {
       case "queen":
         this.validTurns = this.queen
         break
-        case "knight":
-        this.validTurns=this.knight
+      case "knight":
+        this.validTurns = this.knight
         break
-        case "king":
-        this.validTurns=this.king
+      case "king":
+        this.validTurns = this.king
       default:
         break
     }
   }
 }
 class Board {
-  turn = true
+  turn ="black"
   constructor() {
     this.data = [
       [
@@ -381,6 +409,17 @@ class Board {
     this.data[pos[0]][pos[1]] = new Piece(piece, team, pos)
     updateDisplay()
   }
+  checkCheck() {
+  let result=[]
+  for (let i=0;i<board.data.length;i++){
+  for (let o=0;o<board.data[i].length;o++){
+  if (board.data[i][o]){
+  if (board.data[i][o].team==this.turn){
+  
+  result.push(board.data[i][o].validTurns(true))
+}}}}
+    return result.flat()
+  }
   move = (piece, pos) => {
     this.data[pos[0]][pos[1]] = piece
     this.data[piece.pos[0]][piece.pos[1]] = ""
@@ -393,7 +432,7 @@ class Board {
       }
       result += "\n"
     }
-    console.log(result)
+    this.turn=this.turn=="white" ? "black" : "white"
   }
 }
 
@@ -410,9 +449,9 @@ function selectPiece(element) {
   pos[0] = Number(pos[0])
   pos[1] = Number(pos[1])
   var piece = board.data[pos[0]][pos[1]]
-  if (selectedPiece) {
+   if (selectedPiece) {
     if (selectedPiece == piece) {
-      for (let i of selectedPiece.validTurns(pos)) {
+      for (let i of selectedPiece.validTurns()) {
         document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = ""
       }
       selectedPiece = ""
@@ -422,16 +461,15 @@ function selectPiece(element) {
           .validTurns()
           .some((r) => JSON.stringify(r) == JSON.stringify(pos))
       ) {
-        for (let i of selectedPiece.validTurns(pos)) {
+        for (let i of selectedPiece.validTurns()) {
           document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = ""
         }
         board.move(selectedPiece, pos)
         selectedPiece = ""
       }
     }
-  } else {
-    for (let i of piece.validTurns(pos)) {
-      console.log(i)
+  } else if (board.turn==piece.team) {
+    for (let i of piece.validTurns()) {
       document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor =
         "yellow"
       selectedPiece = piece
@@ -466,11 +504,8 @@ board = new Board()
 createChessBoard()
 
 updateDisplay()
-//}
-//main()
-//knight rules: check if one axis is offest by 1, and that the other is offset by 2
-//rook: check if only one,row or column, is changing
-//pawn: check if the space ahead is open, or if there is enemy in the two corners
-//bishop: check if both axis change by same number
-//king: only change any value by 1 or -1
-//queen: bishop + rook
+
+cellsInCheck=board.checkCheck();
+}
+main()
+
