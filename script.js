@@ -505,7 +505,6 @@ createChessBoard()
 
 updateDisplay()
 
-cellsInCheck=board.checkCheck();
 }
 main()
 
