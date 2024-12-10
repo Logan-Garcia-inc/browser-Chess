@@ -1,4 +1,4 @@
-
+function main(){
 var cellsInCheck=[]
 function spawnPiece(pos) {
   return
@@ -506,3 +506,5 @@ createChessBoard()
 updateDisplay()
 
 
+}
+main()
