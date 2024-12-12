@@ -494,7 +494,7 @@ function createChessBoard() {
         selectPiece(e.target)
       })
       box.style =
-        "border-style: solid; border-width:1px; font-size:10px;font-weight: bold; background-size:contain;background-repeat:no-repeat;background-blend-mode: multiply;"
+        "border-style: solid; border-width:1px; font-size:10px;font-weight: bold; background-size:contain;background-repeat:no-repeat;background-blend-mode: multiply;background-color:white"
       box.id = `${i};${o}`
       box.textContent = `${i};${o}`
       chessBox.append(box)
