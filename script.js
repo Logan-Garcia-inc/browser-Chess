@@ -349,7 +349,7 @@ return result
   }
 }
 class Board {
-  turn ="black"
+  turn ="white"
   constructor() {
     this.data = [[
         new Piece("rook", "black"),
