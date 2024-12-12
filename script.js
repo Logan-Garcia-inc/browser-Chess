@@ -351,42 +351,7 @@ return result
 class Board {
   turn ="black"
   constructor() {
-    this.data = [
-      [
-        new Piece("rook", "white"),
-        new Piece("knight", "white"),
-        new Piece("bishop", "white"),
-        new Piece("king", "white"),
-        new Piece("queen", "white"),
-        new Piece("bishop", "white"),
-        new Piece("knight", "white"),
-        new Piece("rook", "white"),
-      ],
-      [
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-        new Piece("pawn", "white"),
-      ],
-      Array(8).fill(""),
-      Array(8).fill(""),
-      Array(8).fill(""),
-      Array(8).fill(""),
-      [
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-        new Piece("pawn", "black"),
-      ],
-      [
+    this.data = [[
         new Piece("rook", "black"),
         new Piece("knight", "black"),
         new Piece("bishop", "black"),
@@ -395,7 +360,43 @@ class Board {
         new Piece("bishop", "black"),
         new Piece("knight", "black"),
         new Piece("rook", "black"),
+      ],   [
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
+        new Piece("pawn", "black"),
       ],
+     
+      Array(8).fill(""),
+      Array(8).fill(""),
+      Array(8).fill(""),
+      Array(8).fill(""),
+   
+      
+      [
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+        new Piece("pawn", "white"),
+      ],
+       [
+        new Piece("rook", "white"),
+        new Piece("knight", "white"),
+        new Piece("bishop", "white"),
+        new Piece("king", "white"),
+        new Piece("queen", "white"),
+        new Piece("bishop", "white"),
+        new Piece("knight", "white"),
+        new Piece("rook", "white"),
+      ]
     ]
     for (let i = 0; i < this.data.length; i++) {
       for (let o = 0; o < this.data[i].length; o++) {
@@ -438,9 +439,10 @@ class Board {
 
 var removeEverything = () => {
   var elements = document.body.querySelectorAll("*")
-  for (var i = 0; i < elements.length; i++) {
-    elements[0].remove()
-  }
+  for (var i = 0; i < elements.length;) {
+    if (elements[i].tagName=="script"){i++}else{
+    elements[i].remove()
+  }}
 }
 
 var selectedPiece = ""
