@@ -73,9 +73,9 @@ class Piece {
     let y = this.pos[0]
     let x = this.pos[1]
     if (this.team == "white") {
-      offset = 1
-    } else {
       offset = -1
+    } else {
+      offset = 1
     }
     if (board.data[y + 1 * offset][x - 1]) {
       if (board.data[y + 1 * offset][x - 1].team != this.team) {
@@ -318,7 +318,7 @@ return result
         this.turnPlayed = () => {
           this.firstTurn = false
           let offset
-          if (this.team == "white") {
+          if (this.team == "black") {
             offset = 0
           } else {
             offset = 7
@@ -439,9 +439,9 @@ class Board {
 
 var removeEverything = () => {
   var elements = document.body.querySelectorAll("*")
-  for (var i = 0; i < elements.length;) {
-    if (elements[i].tagName=="script"){i++}else{
-    elements[i].remove()
+  for (let i of elements) {
+    if (i.tagName=="script"){continue}else{
+    i.remove()
   }}
 }
 
