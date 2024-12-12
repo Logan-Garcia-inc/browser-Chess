@@ -391,8 +391,8 @@ class Board {
         new Piece("rook", "white"),
         new Piece("knight", "white"),
         new Piece("bishop", "white"),
-        new Piece("queen", "white"),
         new Piece("king", "white"),
+        new Piece("queen", "white"),
         new Piece("bishop", "white"),
         new Piece("knight", "white"),
         new Piece("rook", "white"),
@@ -454,7 +454,7 @@ function selectPiece(element) {
    if (selectedPiece) {
     if (selectedPiece == piece) {
       for (let i of selectedPiece.validTurns()) {
-        document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = ""
+        document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = "white"
       }
       selectedPiece = ""
     } else {
@@ -464,7 +464,7 @@ function selectPiece(element) {
           .some((r) => JSON.stringify(r) == JSON.stringify(pos))
       ) {
         for (let i of selectedPiece.validTurns()) {
-          document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = ""
+          document.getElementById(`${i[0]};${i[1]}`).style.backgroundColor = "white"
         }
         board.move(selectedPiece, pos)
         selectedPiece = ""
