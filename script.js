@@ -95,10 +95,10 @@ return result
     } else {
       return result
     }
-
+    if (board.data[y + 2 * offset][x]){
     if (board.data[y + 2 * offset][x] == "" && this.firstTurn) {
       result.push([y + 2 * offset, x])
-    }
+    }}
     return result
   }
   rook() {
