@@ -518,8 +518,6 @@ function main() {
   board = new Board();
   createChessBoard();
 
-  board.createPiece('pawn', 'white', [1, 6]);
-  board.data[0][6] = '';
   updateDisplay();
 }
 main();
